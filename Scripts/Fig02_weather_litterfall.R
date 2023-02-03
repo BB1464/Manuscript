@@ -10,17 +10,19 @@ require(lubridate)
 require(grid)
 require(gridExtra)
 require(patchwork)
+require(ggtext)
 
 # Set working directory
-setwd('C:/Users/hougn001/OneDrive - Wageningen University & Research/Current Downloads/Last chapter/Scripts')
-rm(list=ls())
+# setwd('C:/Users/hougn001/OneDrive - Wageningen University & Research/Current Downloads/Last chapter/Scripts')
+#
+# rm(list=ls())
 
 # Retrieve data from processed folder
-load('../Data/Processed/femo.Rdata')
-load('../Data/Processed/newfemo.Rdata')
+load('Data/Processed/femo.Rdata')
+load('Data/Processed/newfemo.Rdata')
 
 #####
-meteoNASA=meteoNASA %>% 
+meteoNASA=meteoNASA %>%
   mutate(Year=substr(Month,1,4),
          Month=factor(format(Month,'%b'),levels=month.abb,ordered=F))
 
@@ -57,33 +59,44 @@ P00_ugly=ggplot(myNASA)+
 
 P01a=ggplot(myNASA,aes(x=as.factor(Date),group=1))+
   geom_col(aes(y=Rainfall_mm/15),colour='black',fill='white')+
-  geom_path(aes(x=as.factor(Date),y=Temp_2m))+
+  geom_path(aes(x=as.factor(Date),y=Temp_2m),size=0.8)+
   scale_x_discrete(name=NULL)+
-  scale_y_continuous(name=expression(paste('Temperature, ',degree*C)),
-                     sec.axis=sec_axis(~.*15,name='Rainfall, mm'))+
+  scale_y_continuous(name='Temperature \u00B0C',
+                     sec.axis=sec_axis(~.*15,name='Rainfall, mm'),expand = expansion(mult = c(0,0),add = c(0,0.6)))+
   facet_wrap(~Location)+
   theme_test()+
   theme(axis.ticks.x=element_blank(),
         axis.title.x=element_blank(),
-        axis.text.x=element_blank())
+        axis.text.x=element_blank(),axis.text.y  = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        axis.title.y  = element_text(family = 'serif',face = 'bold',colour = 'black'),axis.text.y.right = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        axis.title.y.right = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        strip.text.x = element_text(family = 'serif',face = 'bold',colour = 'black',size = 12))
 
 P01b=ggplot(myNASA,aes(as.factor(Date),Total_mean))+
-  geom_errorbar(aes(ymin=Total_mean-Total_sd,ymax=Total_mean+Total_sd))+
+  geom_errorbar(aes(ymin=Total_mean-Total_sd,ymax=Total_mean+Total_sd),colour='black')+
   geom_col(fill='grey50')+
   scale_x_discrete(name='Period',
                labels=c('Jan 2020',rep('',5),'Jul 2020',rep('',5),
                         'Jan 2021',rep('',5),'Jul 2021',rep('',5)))+
-  scale_y_continuous(name=expression(paste('Litterfall, Mg ',ha^{-1})) )+
+  #labs(y=expression(paste('Litterfall, Mg ',ha^{-1})))+
+  labs(y='Litterfall,  Mg ha^-1')+
+  scale_y_continuous(expand = expansion(mult = c(0,0),add = c(0,0.6)) )+
   facet_wrap(~Location)+
   theme_test()+
-  theme(axis.text.x=element_text(angle=-60,hjust=-0.2,vjust=1.5),
+  theme(axis.text.x=element_text(angle=40,hjust=0.8,vjust=0.7,family = 'serif',face = 'bold',colour = 'black'),
         strip.text.x=element_blank(),
         strip.background=element_blank(),
-        panel.border=element_rect(fill = NA))
+        panel.border=element_rect(fill = NA),
+        axis.text.y = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        axis.title.y = element_markdown(family = 'serif',face = 'bold',colour = 'black'),
+        axis.title.x = element_text(family = 'serif',face = 'bold',colour = 'black'))
 
 graph1=P01a/P01b
 
+graph1
+
 tiff('../Paper_Graphs/Fig02.tiff',width=20,height=10,units='cm',res=600,compression='lzw')
 graph1
-ggsave('../Paper_Graphs/Fig02.tiff')
+ggsave(filename = here::here('Paper_Graphs/Fig02.tiff'))
+#ggsave('../Paper_Graphs/Fig02.tiff')
 dev.off()
