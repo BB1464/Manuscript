@@ -19,8 +19,8 @@ setwd('C:/Users/hougn001/OneDrive - Wageningen University & Research/Current Dow
 rm(list=ls())
 
 # Retrieve data from processed folder
-load('../Data/Processed/femo.Rdata')
-load('../Data/Processed/newfemo.Rdata')
+load('Data/Processed/femo.Rdata')
+load('Data/Processed/newfemo.Rdata')
 
 # x is the number of simulations to run, must be < C3_10~~120
 compiled=c(NULL,NULL,NULL,NULL,NULL)
