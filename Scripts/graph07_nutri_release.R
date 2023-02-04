@@ -15,8 +15,8 @@ setwd('C:/Users/hougn001/OneDrive - Wageningen University & Research/Current Dow
 rm(list=ls())
 
 # Retrieve data from processed folder
-load('../Data/Processed/femo.Rdata')
-load('../Data/Processed/newfemo.Rdata')
+load('Data/Processed/femo.Rdata')
+load('Data/Processed/newfemo.Rdata')
 
 ######
 # Estimated nutrient contents of the annual litterfall volume
@@ -48,7 +48,7 @@ nutri=nutri_check %>%
          Medium=factor(ifelse(Medium=='Bag','without','with'),
                        levels=c('with','without'),ordered=F)) %>%
   rename(Access=Medium)
-  
+
 
 graph07_nutri=ggplot(nutri %>%
                        mutate(Newdate=case_when(Period=='P0'~0,
@@ -63,12 +63,16 @@ graph07_nutri=ggplot(nutri %>%
   scale_colour_manual(values=c('blue','red2'))+
   facet_wrap(~Nutrient,scales = 'free_y')+
   theme_test()+
-  theme(legend.position=c(0.085,0.25))
+  theme(legend.position=c(0.085,0.25),
+        axis.title = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        axis.text = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        strip.text = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        strip.background = element_rect(fill = 'white',colour = NULL))
 graph07_nutri
 
-tiff('../Prez_Graphs/graph07_resid_nutri.tiff',height=7.5,width=12.5,units='cm',res=600,compression='lzw')
+tiff('../Paper_Graphs/graph07_resid_nutri.tiff',height=7.5,width=12.5,units='cm',res=600,compression='lzw')
 graph07_nutri
-ggsave('../Prez_Graphs/graph07_resid_nutri.tiff')
+ggsave('/Paper_Graphs/graph07_resid_nutri.tiff')
 dev.off()
 
 
@@ -80,12 +84,16 @@ graph07bis_nutri=ggplot(nutri,aes(Period,Residual,fill=NULL,colour=Access))+
   scale_x_discrete(labels=c(0,180,248,314,388))+
   facet_grid(~Nutrient,scales = 'free_y')+
   theme_test()+
-  theme(legend.position=c(0.1,0.85))
+  theme(legend.position=c(0.1,0.85),
+        axis.title = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        axis.text = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        strip.text = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        strip.background = element_rect(fill = 'white',colour = NULL))
 graph07bis_nutri
 
-tiff('../Prez_Graphs/graph07bis_resid_nutri.tiff',height=7.5,width=10,units='cm',res=600,compression='lzw')
+tiff('../Paper_Graphs/graph07bis_resid_nutri.tiff',height=7.5,width=10,units='cm',res=600,compression='lzw')
 graph07bis_nutri
-ggsave('../Prez_Graphs/graph07bis_resid_nutri.tiff')
+ggsave('Paper_Graphs/graph07bis_resid_nutri.tiff')
 dev.off()
 
 graph07ter_nutri=ggplot(nutri %>%
@@ -101,11 +109,15 @@ graph07ter_nutri=ggplot(nutri %>%
   scale_colour_manual(values=c('blue','red2'))+
   facet_grid(~Nutrient,scales = 'free_y')+
   theme_test()+
-  theme(legend.position=c(0.1,0.85))
+  theme(legend.position=c(0.1,0.85),
+        axis.title = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        axis.text = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        strip.text = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        strip.background = element_rect(fill = 'white',colour = NULL))
 
-tiff('../Prez_Graphs/graph07ter_resid_nutri.tiff',height=7.5,width=10,units='cm',res=600,compression='lzw')
+tiff('../Paper_Graphs/graph07ter_resid_nutri.tiff',height=7.5,width=10,units='cm',res=600,compression='lzw')
 graph07ter_nutri
-ggsave('../Prez_Graphs/graph07ter_resid_nutri.tiff')
+ggsave('Paper_Graphs/graph07ter_resid_nutri.tiff')
 dev.off()
 
 
@@ -118,11 +130,17 @@ graph07qua_nutri=ggplot(nutri,aes(Period,Residual,fill=NULL,colour=Access))+
   scale_x_discrete(labels=c('Jan','Jun','Aug','Nov','Jan 2021'))+
   facet_grid(~Nutrient,scales = 'free_y')+
   theme_test()+
-  theme(legend.position=c(0.1,0.85))
+  theme(legend.position=c(0.1,0.85),
+        legend.title = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        legend.text = element_text(family = 'serif',colour = 'black'),
+        axis.title = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        axis.text = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        strip.text = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        strip.background = element_rect(fill = 'white',colour = NULL))
 
-tiff('../Prez_Graphs/graph07qua_resid_nutri.tiff',height=7.5,width=10,units='cm',res=600,compression='lzw')
+tiff('../Paper_Graphs/graph07qua_resid_nutri.tiff',height=7.5,width=10,units='cm',res=600,compression='lzw')
 graph07qua_nutri
-ggsave('../Prez_Graphs/graph07qua_resid_nutri.tiff')
+ggsave('Paper_Graphs/graph07qua_resid_nutri.tiff')
 dev.off()
 
 graph07quin_nutri=ggplot(nutri %>%
@@ -138,12 +156,18 @@ graph07quin_nutri=ggplot(nutri %>%
   scale_colour_manual(values=c('blue','red2'))+
   facet_grid(Nutrient~Location,scales='free_y')+
   theme_test()+
-  theme(legend.position=c(0.11,0.55))
+  theme(legend.position=c(0.11,0.55),
+        legend.title = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        legend.text = element_text(family = 'serif',colour = 'black'),
+        axis.title = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        axis.text = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        strip.text = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        strip.background = element_rect(fill = 'white',colour = NULL))
 
 
-tiff('../Prez_Graphs/graph07quin_resid_nutri.tiff',height=10.5,width=10.5,units='cm',res=600,compression='lzw')
+tiff('../Paper_Graphs/graph07quin_resid_nutri.tiff',height=10.5,width=10.5,units='cm',res=600,compression='lzw')
 graph07quin_nutri
-ggsave('../Prez_Graphs/graph07quin_resid_nutri.tiff')
+ggsave('Paper_Graphs/graph07quin_resid_nutri.tiff')
 dev.off()
 
 
@@ -161,16 +185,22 @@ graph08_carbon=ggplot(nutri_check %>%
   scale_colour_manual(name='Access',values=c('blue','red2'),labels=c('with','without'))+
   facet_grid(~Location,scales='free_y')+
   theme_test()+
-  theme(legend.position=c(0.1,0.2))
+  theme(legend.position=c(0.1,0.2),
+        legend.title = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        legend.text = element_text(family = 'serif',colour = 'black'),
+        axis.title = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        axis.text = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        strip.text = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        strip.background = element_rect(fill = 'white',colour = NULL))
 
 
-tiff('../Prez_Graphs/graph08_resid_carb.tiff',height=7.5,width=12.5,units='cm',res=600,compression='lzw')
+tiff('../Paper_Graphs/graph08_resid_carb.tiff',height=7.5,width=12.5,units='cm',res=600,compression='lzw')
 graph08_carbon
-ggsave('../Prez_Graphs/graph08_resid_carb.tiff')
+ggsave('Paper_Graphs/graph08_resid_carb.tiff')
 dev.off()
 
 res00=lmerTest::lmer(FinCconc~Period*Access+(1|Location/Position),
-                     nutri_check %>% 
+                     nutri_check %>%
                        mutate(Medium=factor(ifelse(Medium=='Bag','without','with'),
                                             levels=c('with','without'),ordered=F)) %>%
                        rename(Access=Medium))
@@ -180,9 +210,13 @@ graph08bis_carbon=sjPlot::plot_model(res00,'int')+
        y=expression(paste('C concentration in cocoa leaf litter, mg ',g^{-1})))+
   scale_x_continuous(labels=c(0,180,248,314,388))+
   theme_test()+
-  theme(legend.position=c(0.11,0.15))
+  theme(legend.position=c(0.11,0.15),
+        legend.title = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        legend.text = element_text(family = 'serif',colour = 'black'),
+        axis.title = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        axis.text = element_text(family = 'serif',face = 'bold',colour = 'black'))
 
-tiff('../Prez_Graphs/graph08bis_resid_carb.tiff',height=10,width=15,units='cm',res=600,compression='lzw')
+tiff('../Paper_Graphs/graph08bis_resid_carb.tiff',height=10,width=15,units='cm',res=600,compression='lzw')
 graph08bis_carbon
-ggsave('../Prez_Graphs/graph08bis_resid_carb.tiff')
+ggsave('Paper_Graphs/graph08bis_resid_carb.tiff')
 dev.off()
