@@ -15,8 +15,8 @@ setwd('C:/Users/hougn001/OneDrive - Wageningen University & Research/Current Dow
 rm(list=ls())
 
 # Retrieve data from processed folder
-load('../Data/Processed/femo.Rdata')
-load('../Data/Processed/newfemo.Rdata')
+load('Data/Processed/femo.Rdata')
+load('Data/Processed/newfemo.Rdata')
 
 ######
 # Estimated nutrient contents of the annual litterfall volume
@@ -72,14 +72,14 @@ nutri_stat=nutri_stat %>%
                rename(IniAmount=ResidAmount)) %>%
   mutate(Losses=100*ResidAmount/IniAmount)
 
-nutri_03=nutri_stat %>% 
+nutri_03=nutri_stat %>%
   filter(Access=='+ macrofauna') %>%
   ungroup() %>%
   group_by(Period,Location,Position) %>%
   select(!c(Access,Concentration),ResidAmount) %>%
   rename(Resid_with=ResidAmount)
 
-nutri_04=nutri_stat %>% 
+nutri_04=nutri_stat %>%
   filter(Access=='- macrofauna') %>%
   ungroup() %>%
   group_by(Period,Location,Position) %>%
@@ -100,24 +100,24 @@ nutri_ratio=nutri_check %>%
   rename(Access=Medium)
 
 
-Fig05=ggplot(nutri_stat %>%
-               mutate(Newdate=case_when(Period=='P0'~0,
-                                        Period=='P1'~180,
-                                        Period=='P2'~248,
-                                        Period=='P3'~314,
-                                        Period=='P4'~388)),
-             aes(Newdate,Concentration,fill=NULL,colour=Access,group=paste0(Access,Newdate)))+
-  geom_boxplot(width=30,position=position_dodge())+
-  labs(x='Time, days after incubation',
-       y=expression(paste('Elemental concentration in cocoa leaf litter, mg ', g^{-1})) )+
-  scale_colour_manual(values=c('blue','red2'))+
-  facet_grid(Nutrient~Location,scales='free_y')+
-  theme_test()+
-  theme(legend.title=element_text(size=9),
-        legend.text=element_text(size=7),
-        legend.position=c(0.46,0.5),
-        legend.key=element_rect(fill='grey90'),
-        legend.background=element_rect(fill='grey90'))
+# Fig05=ggplot(nutri_stat %>%
+#                mutate(Newdate=case_when(Period=='P0'~0,
+#                                         Period=='P1'~180,
+#                                         Period=='P2'~248,
+#                                         Period=='P3'~314,
+#                                         Period=='P4'~388)),
+#              aes(Newdate,Concentration,fill=NULL,colour=Access,group=paste0(Access,Newdate)))+
+#   geom_boxplot(width=30,position=position_dodge())+
+#   labs(x='Time, days after incubation',
+#        y=expression(paste('Elemental concentration in cocoa leaf litter, mg ', g^{-1})) )+
+#   scale_colour_manual(values=c('blue','red2'))+
+#   facet_grid(Nutrient~Location,scales='free_y')+
+#   theme_test()+
+#   theme(legend.title=element_text(size=9),
+#         legend.text=element_text(size=7),
+#         legend.position=c(0.46,0.5),
+#         legend.key=element_rect(fill='grey90'),
+#         legend.background=element_rect(fill='grey90'))
 
 # tiff('../Paper_Graphs/Fig05.tiff',height=12.5,width=12.5,units='cm',res=600,compression='lzw')
 # Fig05
@@ -137,15 +137,19 @@ Fig06=ggplot(nutri_stat %>%
   scale_colour_manual(values=c('blue','red2'))+
   facet_grid(Nutrient~Location,scales='free_y')+
   theme_test()+
-  theme(legend.title=element_text(size=9),
-        legend.text=element_text(size=7),
-        legend.position=c(0.46,0.5),
-        legend.key=element_rect(fill='grey90'),
-        legend.background=element_rect(fill='grey90'))
+  theme(legend.title=element_text(size=12,family = 'serif',face = 'bold',colour = 'black'),
+        legend.text=element_text(size=10,family = 'serif',colour = 'black'),
+        legend.position=c(0.46,0.6),
+        legend.key=element_rect(fill = alpha("white", .5)),
+        legend.background=element_rect(fill = alpha("white", 0.5)),
+        strip.background = element_rect(fill = 'white',colour = NULL),
+        strip.text = element_text(family = 'serif',face = 'bold',colour = 'black',size = 12),
+        axis.text = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        axis.title = element_text(family = 'serif',face = 'bold',colour = 'black'))
 
-tiff('../Paper_Graphs/Fig06.tiff',height=12.5,width=12.5,units='cm',res=600,compression='lzw')
+tiff('../Paper_Graphs/Fig06.tiff',height=16.5,width=18.5,units='cm',res=600,compression='lzw')
 Fig06
-ggsave('../Paper_Graphs/Fig06.tiff')
+ggsave('Paper_Graphs/Fig06.tiff')
 dev.off()
 
 
