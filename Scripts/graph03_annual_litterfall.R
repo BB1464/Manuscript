@@ -15,8 +15,8 @@ setwd('C:/Users/hougn001/OneDrive - Wageningen University & Research/Current Dow
 rm(list=ls())
 
 # Retrieve data from processed folder
-load('../Data/Processed/femo.Rdata')
-load('../Data/Processed/newfemo.Rdata')
+load('Data/Processed/femo.Rdata')
+load('Data/Processed/newfemo.Rdata')
 
 #####
 perc_leaf=Lfall5 %>%
@@ -37,7 +37,7 @@ graph_interannual
 
 tiff('../Paper_Graphs/graph03bis_interannual.tiff',height=7.5,width=10,units='cm',res=600,compression='lzw')
 graph_interannual
-ggsave('../Paper_Graphs/graph03bis_interannual.tiff')
+ggsave('Paper_Graphs/graph03bis_interannual.tiff')
 dev.off()
 
 ######
@@ -101,27 +101,33 @@ graph_c_locat_annual=ggplot(carbon_Lfall5,
                          aes(as.factor(Annual),0.01*C/0.4,group=Annual))+
   geom_boxplot()+
   scale_x_discrete(labels=c('2020','2021'))+
-  labs(x='Year',y=expression(paste('C in cocoa leaf litterfall, Mg ',ha^{-1})))+
+  labs(x='Year',y='C in cocoa leaf litterfall, Mg , ha^-1')+
   facet_wrap(~Location)+
-  theme_test()
+  theme_test()+
+  theme(text = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        strip.background = element_rect(fill = 'white',colour = NULL),
+        axis.title.y = ggtext::element_markdown(family = 'serif',face = 'bold',colour = 'black'))
 graph_c_locat_annual
 
 tiff('../Paper_Graphs/graph03_carbon_annual.tiff',height=7.5,width=10,units='cm',res=600,compression='lzw')
 graph_c_locat_annual
-ggsave('../Paper_Graphs/graph03_carbon_annual.tiff')
+ggsave('Paper_Graphs/graph03_carbon_annual.tiff')
 dev.off()
 
 graph_carbon_annual=ggplot(carbon_Lfall5,
                            aes(as.factor(Annual),0.01*C/0.4,group=Annual))+
   geom_boxplot()+
   scale_x_discrete(labels=c('2020','2021'))+
-  labs(x='Year',y=expression(paste('Carbon in cocoa leaf litterfall, Mg ',ha^{-1})))+
-  theme_test()
+  labs(x='Year',y='Carbon in cocoa leaf litterfall, Mg , ha-1')+
+  theme_test()+
+  theme(axis.title.y = ggtext::element_markdown(family = 'serif',face = 'bold',colour = 'black'),
+        axis.title.x = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        axis.text = element_text(family = 'serif',face = 'bold',colour = 'black'))
 graph_carbon_annual
 
 tiff('../Paper_Graphs/graph03bis_carbon_annual.tiff',height=7.5,width=10,units='cm',res=600,compression='lzw')
 graph_carbon_annual
-ggsave('../Paper_Graphs/graph03bis_carbon_annual.tiff')
+ggsave('Paper_Graphs/graph03bis_carbon_annual.tiff')
 dev.off()
 
 graph04_Lcont=ggplot(nutri_litter,
@@ -131,20 +137,27 @@ graph04_Lcont=ggplot(nutri_litter,
                     ymax=MeanContent+SDContent),
                 width=0.3,position=position_dodge(width=0.8))+
   labs(x='Year',fill=NULL,
-       y=expression(paste('Leaf litter nutrient, kg ',ha^{-1})) )+
+       y='Leaf litter nutrient ,  kg , ha-1')+
   scale_fill_manual(values=c('grey40','grey65','grey90'))+
   scale_x_discrete(labels=c('2020','2021'))+
+  scale_y_continuous(expand = expansion(mult = c(0,0.1),add = c(0,0.9)))+
   facet_grid(~Location)+
   theme_test()+
   theme(legend.position=c(0.15,0.9),
-        legend.direction='horizontal')
+        legend.direction='horizontal',
+        legend.text = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        axis.title.y = ggtext::element_markdown(family = 'serif',face = 'bold',colour = 'black'),
+        axis.title.x = ggtext::element_markdown(family = 'serif',face = 'bold',colour = 'black'),
+        axis.text = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        strip.background = element_rect(fill = 'white',colour = NULL),
+        strip.text = element_text(family = 'serif',face = 'bold',colour = 'black'))
 
 tiff('../Paper_Graphs/graph04_nutrientinlitter.tiff',height=7.5,width=15,units='cm',res=600,compression='lzw')
 graph04_Lcont
-ggsave('../Paper_Graphs/graph04_nutrientinlitter.tiff')
+ggsave('Paper_Graphs/graph04_nutrientinlitter.tiff')
 dev.off()
 
-graph04bis_Lcont=ggplot(nutri_litter %>% 
+graph04bis_Lcont=ggplot(nutri_litter %>%
                           mutate(MeanContent=ifelse(Nutrient=='P',10*MeanContent,MeanContent),
                                  SDContent=ifelse(Nutrient=='P',10*SDContent,SDContent)),
                      aes(Annual,MeanContent,fill=Nutrient))+
@@ -155,17 +168,23 @@ graph04bis_Lcont=ggplot(nutri_litter %>%
   labs(x='Year',fill=NULL,
        y=expression(paste('Leaf litter nutrient, kg ',ha^{-1})) )+
   scale_fill_manual(values=c('grey40','grey65','grey90'))+
-  scale_y_continuous(expression(paste('N and K, kg ',ha^{-1})),
+  scale_y_continuous(expand = expansion(mult = c(0,0.2),add = c(0,0.4)),expression(paste('N and K, kg ',ha^{-1})),
                      sec.axis=sec_axis(~./10,name=expression(paste('P, kg ',ha^{-1}))) )+
   scale_x_discrete(labels=c('2020','2021'))+
   facet_grid(~Location)+
   theme_test()+
   theme(legend.position=c(0.16,0.9),
-        legend.direction='horizontal')
+        legend.direction='horizontal',
+        legend.text = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        axis.title.y = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        axis.title.x = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        axis.text = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        strip.background = element_rect(fill = 'white',colour = NULL),
+        strip.text = element_text(family = 'serif',face = 'bold',colour = 'black'))
 
 tiff('../Paper_Graphs/graph04bis_nutrientinlitter.tiff',height=7.5,width=15,units='cm',res=600,compression='lzw')
 graph04bis_Lcont
-ggsave('../Paper_Graphs/graph04bis_nutrientinlitter.tiff')
+ggsave('Paper_Graphs/graph04bis_nutrientinlitter.tiff')
 dev.off()
 
 
@@ -209,7 +228,7 @@ emmeans::emmeans(res03,pairwise~Annual,adj='bonferroni')
 # Descriptive stat for Table 2 and text
 # Mean + std dev per position
 Lfall5[Lfall5$Annual!='2022-01-01',] %>%
-  ungroup() %>% 
+  ungroup() %>%
   group_by(Position) %>%
   mutate(across(where(is.numeric),~.*0.01/0.4)) %>%
   summarize(across(where(is.numeric),c(mean,sd))) %>%
@@ -217,7 +236,7 @@ Lfall5[Lfall5$Annual!='2022-01-01',] %>%
 
 # Proportion per position
 Lfall5[Lfall5$Annual!='2022-01-01',] %>%
-  ungroup() %>% 
+  ungroup() %>%
   group_by(Position) %>%
   mutate(across(where(is.numeric),~.*0.01/0.4)) %>%
   mutate(across(where(is.numeric),~./Total_g)) %>%
@@ -226,7 +245,7 @@ Lfall5[Lfall5$Annual!='2022-01-01',] %>%
 
 # Overall C flows through litterfall (mean +/- sd)
 carbon_Lfall5 %>%
-  ungroup() %>% 
+  ungroup() %>%
   mutate(across(where(is.numeric),~.*0.01/0.4)) %>%
   summarize(across(where(is.numeric),c(mean,sd)))
 
@@ -234,20 +253,20 @@ carbon_Lfall5 %>%
 nutri_Lfall %>%
   mutate(Annual=factor(year(Annual))) %>%
   group_by(Location,Annual,Nutrient) %>%
-  ungroup() %>% 
+  ungroup() %>%
   group_by(Nutrient) %>%
   mutate(across(where(is.numeric),~.*0.01/0.4)) %>%
   summarize_at('Content',c(mean,sd,min,max))
 
 # The tree that received most of shade tree leaves under its canopy
-Lfall5[Lfall5$Annual!='2022-01-01',] %>% 
-  ungroup() %>% 
+Lfall5[Lfall5$Annual!='2022-01-01',] %>%
+  ungroup() %>%
   group_by(Annual,Code) %>%
-  arrange(Shade_g,by_group=T) %>% 
+  arrange(Shade_g,by_group=T) %>%
   View()  # is Code=='Quantification-A05-AA-A'
 # How much did it receive from shade tree leaves close and far from the stem
-Lfall5[Lfall5$Annual!='2022-01-01',] %>% 
-  filter(Code %in% c('Quantification-A05-AA-A','Quantification-A06-AA-A')) %>% 
+Lfall5[Lfall5$Annual!='2022-01-01',] %>%
+  filter(Code %in% c('Quantification-A05-AA-A','Quantification-A06-AA-A')) %>%
   mutate(across(where(is.numeric),~.*0.01/0.4)) %>%
   group_by(Position) %>%  #add Annual, for details
-  summarize(across(where(is.numeric),c(mean,sd))) 
+  summarize(across(where(is.numeric),c(mean,sd)))
