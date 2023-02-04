@@ -9,14 +9,15 @@ require(readxl)
 require(lubridate)
 require(grid)
 require(gridExtra)
+require(ggtext)
 
 # Set working directory
-setwd('C:/Users/hougn001/OneDrive - Wageningen University & Research/Current Downloads/Last chapter/Scripts')
-rm(list=ls())
+# setwd('C:/Users/hougn001/OneDrive - Wageningen University & Research/Current Downloads/Last chapter/Scripts')
+# rm(list=ls())
 
 # Retrieve data from processed folder
-load('../Data/Processed/femo.Rdata')
-load('../Data/Processed/newfemo.Rdata')
+load('Data/Processed/femo.Rdata')
+load('Data/Processed/newfemo.Rdata')
 
 ######
 # Estimated nutrient contents of the annual litterfall volume
@@ -72,14 +73,14 @@ nutri_stat=nutri_stat %>%
                rename(IniAmount=ResidAmount)) %>%
   mutate(Losses=100*ResidAmount/IniAmount)
 
-nutri_03=nutri_stat %>% 
+nutri_03=nutri_stat %>%
   filter(Access=='+ macrofauna') %>%
   ungroup() %>%
   group_by(Period,Location,Position) %>%
   select(!c(Access,Concentration),ResidAmount) %>%
   rename(Resid_with=ResidAmount)
 
-nutri_04=nutri_stat %>% 
+nutri_04=nutri_stat %>%
   filter(Access=='- macrofauna') %>%
   ungroup() %>%
   group_by(Period,Location,Position) %>%
@@ -109,18 +110,32 @@ Old_Fig05=ggplot(nutri_stat %>%
              aes(Newdate,Concentration,fill=NULL,colour=Access,group=paste0(Access,Newdate)))+
   geom_boxplot(width=30,position=position_dodge())+
   labs(x='Time, days after incubation',
-       y=expression(paste('Elemental concentration in cocoa leaf litter, mg ', g^{-1})) )+
+       #y=expression(paste('Elemental concentration in cocoa leaf litter, mg ', g^{-1})),
+       y='Elemental concentration in cocoa leaf litter, mg g^-1')+
   scale_colour_manual(values=c('blue','red2'))+
   facet_grid(Nutrient~Location,scales='free_y')+
   theme_test()+
-  theme(legend.title=element_text(size=9),
-        legend.text=element_text(size=7),
-        legend.position=c(0.46,0.5),
-        legend.key=element_rect(fill='grey90'),
-        legend.background=element_rect(fill='grey90'))
+  theme(legend.title=element_text(size=12,family = 'serif',face = 'bold',colour = 'black'),
+        legend.text=element_text(size=9,family = 'serif',face = 'bold',colour = 'black'),
+        legend.position=c(0.42,0.7),
+        legend.key=element_rect(fill = alpha("white", .5)),
+        legend.background=element_rect(fill = alpha("white", 0.5)),
+        axis.title.y = element_markdown(family = 'serif',face = 'bold'),
+        axis.title.x = element_text(family = 'serif',face = 'bold'),
+        axis.text.x = element_text(family = 'serif',face = 'bold'),
+        axis.text.y = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        strip.text = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        strip.background = element_rect(fill = 'white',colour = NULL))
 
-# tiff('../Paper_Graphs/Old_Fig05.tiff',height=12.5,width=12.5,units='cm',res=600,compression='lzw')
-# Old_Fig05
+
+Old_Fig05
+
+
+ tiff('Paper_Graphs/Old_Fig05.tiff',height=15.5,width=18.5,units='cm',res=600,compression='lzw')
+
+ ggsave(filename = here::here('Paper_Graphs/Fig05_concentrations.tiff'))
+
+Old_Fig05
 # ggsave('../Paper_Graphs/Old_Fig05.tiff')
 # dev.off()
 
@@ -161,13 +176,16 @@ Fig05=ggplot(allSE %>%
   scale_colour_manual(values=c('blue','red2'))+
   facet_wrap(~Nutrient,scales='free_y')+
   theme_test()+
-  theme(legend.title=element_text(size=9),
-        legend.text=element_text(size=7),
+  theme(legend.title=element_text(size=9,family = 'serif',face = 'bold',colour = 'black'),
+        legend.text=element_text(size=7,family = 'serif',colour = 'black'),
         legend.position=c(0.12,0.25),
         legend.key=element_rect(fill='white'),
-        legend.background=element_rect(fill='white'))
+        legend.background=element_rect(fill='white'),
+        strip.background = element_rect(fill = 'white',colour = NULL),
+        strip.text.x = element_text(family = 'serif',face = 'bold',colour = 'black'))
 
-tiff('../Paper_Graphs/Fig05.tiff',height=7.5,width=12.5,units='cm',res=600,compression='lzw')
+tiff('Paper_Graphs/Fig05.tiff',height=7.5,width=12.5,units='cm',res=600,compression='lzw')
 Fig05
+
 ggsave('../Paper_Graphs/Fig05.tiff')
 dev.off()
