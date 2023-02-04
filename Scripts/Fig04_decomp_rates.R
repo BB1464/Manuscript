@@ -11,14 +11,15 @@ require(ggpubr)
 require(grid)
 require(gridExtra)
 require(nlme)
+require(ggtext)
 
 # Set working directory
-setwd('C:/Users/hougn001/OneDrive - Wageningen University & Research/Current Downloads/Last chapter/Scripts')
-rm(list=ls())
+# setwd('C:/Users/hougn001/OneDrive - Wageningen University & Research/Current Downloads/Last chapter/Scripts')
+# rm(list=ls())
 
 # Retrieve data from processed folder
-load('../Data/Processed/femo.Rdata')
-load('../Data/Processed/newfemo.Rdata')
+load('Data/Processed/femo.Rdata')
+load('Data/Processed/newfemo.Rdata')
 
 #####data wrangling
 
@@ -68,7 +69,7 @@ moredate=cbind.data.frame(Time=0:max(set2$Time,na.rm=T),Medium='Litterbag')
 # performance::icc(res03,by_group=T)
 # multilevelTools::iccMixed('Residual',c('Time','Location','Duplicate','Medium'),decomp1)
 # multilevelTools::iccMixed('Residual',c('Location','Duplicate','Medium'),decomp1)
-# 
+#
 # fixef(res03)
 # ranef(res03)
 # k03_frame=summary(res03)[['coefficients']][['fixed']][1]
@@ -79,7 +80,7 @@ moredate=cbind.data.frame(Time=0:max(set2$Time,na.rm=T),Medium='Litterbag')
 # fractionnation_coef=k03_frame/k03_bag
 # # Mass loss differnce at end of incubation was (%)
 # exp(-k03_bag* max(decomp1$Time))-exp(-k03_frame* max(decomp1$Time))
-# 
+#
 # graph05_decomp=ggplot(decomp1,aes(Time,100*Residual,colour=Medium))+
 #   geom_point()+
 #   geom_line(data=moredate,aes(y=100*exp(-k03_bag*Time)),colour='red2',size=0.8)+
@@ -95,12 +96,12 @@ moredate=cbind.data.frame(Time=0:max(set2$Time,na.rm=T),Medium='Litterbag')
 #   theme_test()+
 #   theme(legend.position=c(0.25,0.1),
 #         legend.direction='horizontal')
-# 
+#
 # # tiff('../Prez_Graphs/graph05_decomp.tiff',height=7.5,width=12.5,units='cm',res=600,compression='lzw')
 # # graph05_decomp
 # # ggsave('../Prez_Graphs/graph05_decomp.tiff')
 # # dev.off()
-# 
+#
 # graph05bis_decomp=ggplot(decomp1,aes(Time,100*Residual,colour=Medium))+
 #   geom_point(aes(shape=Location))+
 #   geom_line(data=moredate,aes(y=100*exp(-k03_bag*Time)),colour='red2',size=0.8)+
@@ -121,7 +122,7 @@ moredate=cbind.data.frame(Time=0:max(set2$Time,na.rm=T),Medium='Litterbag')
 # # graph05bis_decomp
 # # ggsave('../Prez_Graphs/graph05bis_decomp.tiff')
 # # dev.off()
-# 
+#
 # graph05ter_decomp=ggplot(decomp1,aes(Time,100*Residual,colour=Medium))+
 #   geom_point()+
 #   geom_line(data=moredate,aes(y=100*exp(-k03_bag*Time)),colour='red2',size=0.8)+
@@ -147,7 +148,7 @@ moredate=cbind.data.frame(Time=0:max(set2$Time,na.rm=T),Medium='Litterbag')
 # performance::icc(res04,by_group=T)
 # multilevelTools::iccMixed('Residual',c('Time','Location','Duplicate','Medium'),decomp1)
 # multilevelTools::iccMixed('Residual',c('Location','Duplicate','Medium'),decomp1)
-# 
+#
 # fixef(res04)
 # ranef(res04)
 # k04_frame=summary(res04)[['coefficients']][['fixed']][1]
@@ -191,12 +192,25 @@ Fig04=ggplot(decomp1,aes(Time,-log(Residual),colour=Medium))+
   geom_text(data=k_values,aes(x=100,y=1.2,label=k_with),colour='blue')+
   facet_grid(~Location)+
   theme_test()+
-  theme(legend.position=c(0.75,0.85))
+  theme(legend.position=c(0.75,0.85),
+        axis.text = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        axis.title = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        axis.title.y = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        strip.text.x = element_text(family = 'serif',face = 'bold',colour = 'black',size = 12),
+        strip.background = element_rect(fill = 'white',colour = NULL))
 
-tiff('../Paper_Graphs/Fig04.tiff',height=10,width=20,units='cm',res=600,compression='lzw')
+
+
+# Save the Plot -----------------------------------------------------------
+
+tiff('Paper_Graphs/Fig04.tiff',height=10,width=20,units='cm',res=600,compression='lzw')
 Fig04
-ggsave('../Paper_Graphs/Fig04.tiff')
+#ggsave('../Paper_Graphs/Fig04.tiff')
+
+ggsave(filename = here::here('Paper_Graphs/Fig04.tiff'))
+
 dev.off()
+
 
 all_k=k_values %>%
   pivot_longer(cols=starts_with('k'),names_to='Medium',values_to='k_val')
