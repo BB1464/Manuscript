@@ -12,10 +12,6 @@ require(gridExtra)
 require(patchwork)
 require(ggtext)
 
-# Set working directory
-# setwd('C:/Users/hougn001/OneDrive - Wageningen University & Research/Current Downloads/Last chapter/Scripts')
-#
-# rm(list=ls())
 
 # Retrieve data from processed folder
 load('Data/Processed/femo.Rdata')
@@ -70,11 +66,12 @@ P01a=ggplot(myNASA,aes(x=as.factor(Date),group=1))+
         axis.text.x=element_blank(),axis.text.y  = element_text(family = 'serif',face = 'bold',colour = 'black'),
         axis.title.y  = element_text(family = 'serif',face = 'bold',colour = 'black'),axis.text.y.right = element_text(family = 'serif',face = 'bold',colour = 'black'),
         axis.title.y.right = element_text(family = 'serif',face = 'bold',colour = 'black'),
-        strip.text.x = element_text(family = 'serif',face = 'bold',colour = 'black',size = 12))
+        strip.text.x = element_text(family = 'serif',face = 'bold',colour = 'black',size = 12),
+        strip.background = element_rect(fill = 'white',colour = NULL))
 
 P01b=ggplot(myNASA,aes(as.factor(Date),Total_mean))+
   geom_errorbar(aes(ymin=Total_mean-Total_sd,ymax=Total_mean+Total_sd),colour='black')+
-  geom_col(fill='grey50')+
+  geom_col(fill='#3B3B3B')+
   scale_x_discrete(name='Period',
                labels=c('Jan 2020',rep('',5),'Jul 2020',rep('',5),
                         'Jan 2021',rep('',5),'Jul 2021',rep('',5)))+
@@ -89,7 +86,7 @@ P01b=ggplot(myNASA,aes(as.factor(Date),Total_mean))+
         panel.border=element_rect(fill = NA),
         axis.text.y = element_text(family = 'serif',face = 'bold',colour = 'black'),
         axis.title.y = element_markdown(family = 'serif',face = 'bold',colour = 'black'),
-        axis.title.x = element_text(family = 'serif',face = 'bold',colour = 'black'))
+        axis.title.x = element_text(family = 'serif',face = 'bold',colour = 'black',margin = margin(t = 10,b = 10)))
 
 graph1=P01a/P01b
 
@@ -98,5 +95,5 @@ graph1
 tiff('../Paper_Graphs/Fig02.tiff',width=20,height=10,units='cm',res=600,compression='lzw')
 graph1
 ggsave(filename = here::here('Paper_Graphs/Fig02.tiff'))
-#ggsave('../Paper_Graphs/Fig02.tiff')
+
 dev.off()

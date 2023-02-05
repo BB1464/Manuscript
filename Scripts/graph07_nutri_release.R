@@ -1,6 +1,3 @@
-## ----setup, include=FALSE----------------------------------------------------------------------
-knitr::opts_chunk$set(echo = TRUE)
-
 
 ## ----warning=F, echo=F-------------------------------------------------------------------------
 require(tidyverse)
@@ -10,9 +7,6 @@ require(lubridate)
 require(grid)
 require(gridExtra)
 
-# Set working directory
-setwd('C:/Users/hougn001/OneDrive - Wageningen University & Research/Current Downloads/Last chapter/Scripts')
-rm(list=ls())
 
 # Retrieve data from processed folder
 load('Data/Processed/femo.Rdata')
@@ -68,11 +62,13 @@ graph07_nutri=ggplot(nutri %>%
         axis.text = element_text(family = 'serif',face = 'bold',colour = 'black'),
         strip.text = element_text(family = 'serif',face = 'bold',colour = 'black'),
         strip.background = element_rect(fill = 'white',colour = NULL))
+
 graph07_nutri
 
 tiff('../Paper_Graphs/graph07_resid_nutri.tiff',height=7.5,width=12.5,units='cm',res=600,compression='lzw')
 graph07_nutri
-ggsave('/Paper_Graphs/graph07_resid_nutri.tiff')
+ggsave('Paper_Graphs/graph07_resid_nutri.tiff')
+
 dev.off()
 
 
@@ -89,6 +85,7 @@ graph07bis_nutri=ggplot(nutri,aes(Period,Residual,fill=NULL,colour=Access))+
         axis.text = element_text(family = 'serif',face = 'bold',colour = 'black'),
         strip.text = element_text(family = 'serif',face = 'bold',colour = 'black'),
         strip.background = element_rect(fill = 'white',colour = NULL))
+
 graph07bis_nutri
 
 tiff('../Paper_Graphs/graph07bis_resid_nutri.tiff',height=7.5,width=10,units='cm',res=600,compression='lzw')

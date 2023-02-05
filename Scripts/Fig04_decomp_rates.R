@@ -1,6 +1,3 @@
-## ----setup, include=FALSE----------------------------------------------------------------------
-knitr::opts_chunk$set(echo = TRUE)
-
 
 ## ----warning=F, echo=F-------------------------------------------------------------------------
 require(tidyverse)
@@ -12,10 +9,6 @@ require(grid)
 require(gridExtra)
 require(nlme)
 require(ggtext)
-
-# Set working directory
-# setwd('C:/Users/hougn001/OneDrive - Wageningen University & Research/Current Downloads/Last chapter/Scripts')
-# rm(list=ls())
 
 # Retrieve data from processed folder
 load('Data/Processed/femo.Rdata')

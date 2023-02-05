@@ -1,6 +1,3 @@
-## --setup, include=FALSE----------------------------------------------------------------------
-knitr::opts_chunk$set(echo = TRUE)
-
 
 ## --warning=F, echo=F-------------------------------------------------------------------------
 require(tidyverse)
@@ -10,13 +7,10 @@ require(lubridate)
 require(grid)
 require(gridExtra)
 
-# Set working directory
-setwd('C:/Users/hougn001/OneDrive - Wageningen University & Research/Current Downloads/Last chapter/Scripts')
-rm(list=ls())
 
 # Retrieve data from processed folder
-load('../Data/Processed/femo.Rdata')
-load('../Data/Processed/newfemo.Rdata')
+load('Data/Processed/femo.Rdata')
+load('Data/Processed/newfemo.Rdata')
 
 ######
 # Estimated nutrient contents of the annual litterfall volume
@@ -64,14 +58,14 @@ nutri_02=nutri_check %>%
 
 nutri_stat=inner_join(nutri_01,nutri_02); rm(nutri_01,nutri_02)
 
-nutri_03=nutri_stat %>% 
+nutri_03=nutri_stat %>%
   filter(Access=='with') %>%
   ungroup() %>%
   group_by(Period,Location,Position) %>%
   select(!c(Access,Concentration),ResidAmount) %>%
   rename(Resid_with=ResidAmount)
 
-nutri_04=nutri_stat %>% 
+nutri_04=nutri_stat %>%
   filter(Access=='without') %>%
   ungroup() %>%
   group_by(Period,Location,Position) %>%
@@ -113,7 +107,7 @@ amount_quick=function(x){
   print(anova(res01))
   print(emmeans::emmeans(res01,pairwise~Period))
   print(emmeans::emmeans(res01,pairwise~Access|Period,adj='bonferroni'))
-  
+
 }
 
 
@@ -127,7 +121,7 @@ ratio_quick=function(x){
   print(summary(res02))
   print(emmeans::emmeans(res02,pairwise~Period,adj='bonferroni'))
   print(emmeans::emmeans(res02,pairwise~Access|Period,adj='bonferroni'))
-  
+
 }
 
 amount_diff=function(x){

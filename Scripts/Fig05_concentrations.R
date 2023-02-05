@@ -1,6 +1,3 @@
-## ----setup, include=FALSE----------------------------------------------------------------------
-knitr::opts_chunk$set(echo = TRUE)
-
 
 ## ----warning=F, echo=F-------------------------------------------------------------------------
 require(tidyverse)
@@ -11,9 +8,6 @@ require(grid)
 require(gridExtra)
 require(ggtext)
 
-# Set working directory
-# setwd('C:/Users/hougn001/OneDrive - Wageningen University & Research/Current Downloads/Last chapter/Scripts')
-# rm(list=ls())
 
 # Retrieve data from processed folder
 load('Data/Processed/femo.Rdata')
@@ -131,13 +125,13 @@ Old_Fig05=ggplot(nutri_stat %>%
 Old_Fig05
 
 
- tiff('Paper_Graphs/Old_Fig05.tiff',height=15.5,width=18.5,units='cm',res=600,compression='lzw')
+tiff('Paper_Graphs/Old_Fig05.tiff',height=15.5,width=18.5,units='cm',res=600,compression='lzw')
 
- ggsave(filename = here::here('Paper_Graphs/Fig05_concentrations.tiff'))
+ggsave(filename = here::here('Paper_Graphs/Fig05_concentrations.tiff'))
 
 Old_Fig05
-# ggsave('../Paper_Graphs/Old_Fig05.tiff')
-# dev.off()
+
+dev.off()
 
 allSE=c(NULL,NULL,NULL,NULL,NULL)
 concen_extract=function(x){
@@ -187,5 +181,5 @@ Fig05=ggplot(allSE %>%
 tiff('Paper_Graphs/Fig05.tiff',height=7.5,width=12.5,units='cm',res=600,compression='lzw')
 Fig05
 
-ggsave('../Paper_Graphs/Fig05.tiff')
+ggsave('Paper_Graphs/Fig05.tiff')
 dev.off()

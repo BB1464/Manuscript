@@ -1,6 +1,3 @@
-## ----setup, include=FALSE----------------------------------------------------------------------
-knitr::opts_chunk$set(echo = TRUE)
-
 
 ## ----warning=F, echo=F-------------------------------------------------------------------------
 require(tidyverse)
@@ -10,9 +7,6 @@ require(lubridate)
 require(grid)
 require(gridExtra)
 
-# Set working directory
-setwd('C:/Users/hougn001/OneDrive - Wageningen University & Research/Current Downloads/Last chapter/Scripts')
-rm(list=ls())
 
 # Retrieve data from processed folder
 load('Data/Processed/femo.Rdata')
@@ -33,6 +27,7 @@ graph_interannual=ggplot(Lfall5[Lfall5$Annual!='2022-01-01',],
   labs(x='Year',y=expression(paste('Total litterfall, Mg ',ha^{-1})))+
   geom_text(data=perc_leaf,mapping=aes(x=ifelse(Year==2020,1,2),y=2,label=label))+
   theme_test()
+
 graph_interannual
 
 tiff('../Paper_Graphs/graph03bis_interannual.tiff',height=7.5,width=10,units='cm',res=600,compression='lzw')
@@ -107,6 +102,7 @@ graph_c_locat_annual=ggplot(carbon_Lfall5,
   theme(text = element_text(family = 'serif',face = 'bold',colour = 'black'),
         strip.background = element_rect(fill = 'white',colour = NULL),
         axis.title.y = ggtext::element_markdown(family = 'serif',face = 'bold',colour = 'black'))
+
 graph_c_locat_annual
 
 tiff('../Paper_Graphs/graph03_carbon_annual.tiff',height=7.5,width=10,units='cm',res=600,compression='lzw')
@@ -161,13 +157,13 @@ graph04bis_Lcont=ggplot(nutri_litter %>%
                           mutate(MeanContent=ifelse(Nutrient=='P',10*MeanContent,MeanContent),
                                  SDContent=ifelse(Nutrient=='P',10*SDContent,SDContent)),
                      aes(Annual,MeanContent,fill=Nutrient))+
-  geom_col(position=position_dodge(width=0.8))+
   geom_errorbar(aes(ymin=MeanContent-SDContent,
                     ymax=MeanContent+SDContent),
                 width=0.3,position=position_dodge(width=0.8))+
+  geom_col(position=position_dodge(width=0.8))+
   labs(x='Year',fill=NULL,
        y=expression(paste('Leaf litter nutrient, kg ',ha^{-1})) )+
-  scale_fill_manual(values=c('grey40','grey65','grey90'))+
+  scale_fill_manual(values=c('grey90','#7F7F7F','#3B3B3B'))+
   scale_y_continuous(expand = expansion(mult = c(0,0.2),add = c(0,0.4)),expression(paste('N and K, kg ',ha^{-1})),
                      sec.axis=sec_axis(~./10,name=expression(paste('P, kg ',ha^{-1}))) )+
   scale_x_discrete(labels=c('2020','2021'))+

@@ -2,9 +2,6 @@
 # Number of litter traps per plot used in previous studies
 # Sari=2, Dawoe=4,Mughaly=20, Saj=3, Yao=3
 
-## --setup, include=FALSE----------------------------------------------------------------------
-knitr::opts_chunk$set(echo = TRUE)
-
 
 ## --warning=F, echo=F-------------------------------------------------------------------------
 require(tidyverse)
@@ -14,9 +11,6 @@ require(lubridate)
 require(grid)
 require(gridExtra)
 
-# Set working directory
-setwd('C:/Users/hougn001/OneDrive - Wageningen University & Research/Current Downloads/Last chapter/Scripts')
-rm(list=ls())
 
 # Retrieve data from processed folder
 load('Data/Processed/femo.Rdata')
