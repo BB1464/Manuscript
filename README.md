@@ -1,4 +1,4 @@
-## This Repo Contains Codes in which I used for Writting a Manuscript on Macrofauna alters common views on nutrient cycling through litterfall in cocoa
+## This repo contains codes in which we used for writting the manuscript on macrofauna alters common views on nutrient cycling through litterfall in cocoa for the CocoaSoils project.
 
 
 <p align="center">
