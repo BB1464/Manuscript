@@ -174,11 +174,11 @@ Fig04=ggplot(decomp1,aes(Time,-log(Residual),colour=Medium))+
   #values=c('grey90','#7F7F7F','#3B3B3B'
   labs(x='Time, days after incubation',colour='Access',
        y=expression(paste('-ln(', italic(m[t]), ' / ', italic(m[i]),')')) )+
-  scale_colour_manual(labels=c('+ macrofauna','- macrofauna'),values=c('red','blue'))+
+  scale_colour_manual(labels=c('+ macrofauna','- macrofauna'),values=c('blue','red'))+
   stat_cor(aes(label=paste(..rr.label..)),
            r.accuracy=0.01,
            label.x=0, label.y=c(1.1,0.7)) +
-  annotate('text',x=10,y=0.8,colour='red2',
+  annotate('text',x=10,y=0.8,colour='red',
            label=expression(paste(italic(k['-']),'=')) )+
   annotate('text',x=10,y=1.2,colour='blue',
            label=expression(paste(italic(k['+']),'=')) )+
@@ -187,8 +187,10 @@ Fig04=ggplot(decomp1,aes(Time,-log(Residual),colour=Medium))+
   facet_grid(~Location)+
   theme_test()+
   theme(legend.position=c(0.75,0.85),
-        axis.text = element_text(family = 'serif',face = 'bold',colour = 'black'),
+        axis.text = element_text(family = 'serif',face = 'bold',colour = 'black',size=12),
         axis.title = element_text(family = 'serif',face = 'bold',colour = 'black',size=12),
+        legend.text = element_text(family = 'serif',face = 'bold',colour = 'black',size=12),
+        legend.title = element_text(family = 'serif',face = 'bold',colour = 'black',size=12),
         axis.title.y = element_text(family = 'serif',face = 'bold',colour = 'black',size=12),
         strip.text.x = element_text(family = 'serif',face = 'bold',colour = 'black',size=14),
         strip.background = element_rect(fill = 'white',colour = NULL))
@@ -203,6 +205,18 @@ Fig04
 #ggsave('../Paper_Graphs/Fig04.tiff')
 
 ggsave(filename = here::here('Paper_Graphs/Fig04.tiff'))
+
+dev.off()
+
+# Fig04
+ggsave(
+  filename = 'Fig04.png',
+  plot = last_plot(),
+  path = here::here('Paper_Graphs/'),
+  width = 10,
+  height = 6,
+  dpi = 320
+)
 
 dev.off()
 

@@ -154,6 +154,7 @@ concen_extract=function(x){
 
 sapply(c('C','N','P','K'),concen_extract)
 allSE$Nutrient=factor(allSE$Nutrient,levels=c('C','N','P','K'))
+
 Fig05=ggplot(allSE %>%
                mutate(Newdate=case_when(Period=='P0'~0,
                                         Period=='P1'~180,
@@ -170,16 +171,36 @@ Fig05=ggplot(allSE %>%
   scale_colour_manual(values=c('blue','red2'))+
   facet_wrap(~Nutrient,scales='free_y')+
   theme_test()+
-  theme(legend.title=element_text(size=9,family = 'serif',face = 'bold',colour = 'black'),
-        legend.text=element_text(size=7,family = 'serif',colour = 'black'),
+  theme(#legend.title=element_text(size=9,family = 'serif',face = 'bold',colour = 'black'),
+        #legend.text=element_text(size=7,family = 'serif',colour = 'black'),
         legend.position=c(0.12,0.25),
         legend.key=element_rect(fill='white'),
         legend.background=element_rect(fill='white'),
+        axis.text = element_text(family = 'serif',face = 'bold',colour = 'black',size=12),
+        axis.title.y.left  = element_text(family = 'serif',face = 'bold',colour = 'black',size=14),
+        axis.title = element_text(family = 'serif',face = 'bold',colour = 'black',size=12),
+        legend.text = element_text(family = 'serif',face = 'bold',colour = 'black',size=12),
+        legend.title = element_text(family = 'serif',face = 'bold',colour = 'black',size=12),
         strip.background = element_rect(fill = 'white',colour = NULL),
-        strip.text.x = element_text(family = 'serif',face = 'bold',colour = 'black'))
+        strip.text.x = element_text(family = 'serif',face = 'bold',colour = 'black',size=12))
 
 tiff('Paper_Graphs/Fig05.tiff',height=7.5,width=12.5,units='cm',res=600,compression='lzw')
+
 Fig05
 
 ggsave('Paper_Graphs/Fig05.tiff')
 dev.off()
+
+
+# Fig05
+ggsave(
+  filename = 'Fig05.png',
+  plot = last_plot(),
+  path = here::here('Paper_Graphs/'),
+  width = 7,
+  height = 6,
+  dpi = 320
+)
+
+dev.off()
+
