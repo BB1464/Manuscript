@@ -227,8 +227,7 @@ Lfall5[Lfall5$Annual!='2022-01-01',] %>%
   ungroup() %>%
   group_by(Position) %>%
   mutate(across(where(is.numeric),~.*0.01/0.4)) %>%
-  summarize(across(where(is.numeric),c(mean,sd))) %>%
-  View()
+  summarize(across(where(is.numeric),c(mean,sd)))
 
 # Proportion per position
 Lfall5[Lfall5$Annual!='2022-01-01',] %>%
@@ -236,8 +235,7 @@ Lfall5[Lfall5$Annual!='2022-01-01',] %>%
   group_by(Position) %>%
   mutate(across(where(is.numeric),~.*0.01/0.4)) %>%
   mutate(across(where(is.numeric),~./Total_g)) %>%
-  summarize(across(where(is.numeric),mean)) %>%
-  View()
+  summarize(across(where(is.numeric),mean))
 
 # Overall C flows through litterfall (mean +/- sd)
 carbon_Lfall5 %>%

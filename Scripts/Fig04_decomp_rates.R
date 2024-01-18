@@ -170,10 +170,11 @@ rownames(k_values)=NULL
 Fig04=ggplot(decomp1,aes(Time,-log(Residual),colour=Medium))+
   geom_point()+
   geom_smooth(method=lm,formula='y~0+x',se=F)+
-  scale_colour_manual(values=c('blue','red2'))+
+  scale_colour_manual(values=c('red','blue'))+
+  #values=c('grey90','#7F7F7F','#3B3B3B'
   labs(x='Time, days after incubation',colour='Access',
        y=expression(paste('-ln(', italic(m[t]), ' / ', italic(m[i]),')')) )+
-  scale_colour_manual(labels=c('+ macrofauna','- macrofauna'),values=c('blue','red2'))+
+  scale_colour_manual(labels=c('+ macrofauna','- macrofauna'),values=c('red','blue'))+
   stat_cor(aes(label=paste(..rr.label..)),
            r.accuracy=0.01,
            label.x=0, label.y=c(1.1,0.7)) +
@@ -187,12 +188,13 @@ Fig04=ggplot(decomp1,aes(Time,-log(Residual),colour=Medium))+
   theme_test()+
   theme(legend.position=c(0.75,0.85),
         axis.text = element_text(family = 'serif',face = 'bold',colour = 'black'),
-        axis.title = element_text(family = 'serif',face = 'bold',colour = 'black'),
-        axis.title.y = element_text(family = 'serif',face = 'bold',colour = 'black'),
-        strip.text.x = element_text(family = 'serif',face = 'bold',colour = 'black',size = 12),
+        axis.title = element_text(family = 'serif',face = 'bold',colour = 'black',size=12),
+        axis.title.y = element_text(family = 'serif',face = 'bold',colour = 'black',size=12),
+        strip.text.x = element_text(family = 'serif',face = 'bold',colour = 'black',size=14),
         strip.background = element_rect(fill = 'white',colour = NULL))
 
 
+Fig04
 
 # Save the Plot -----------------------------------------------------------
 
