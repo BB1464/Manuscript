@@ -145,10 +145,39 @@ Fig06=ggplot(nutri_stat %>%
         axis.text = element_text(family = 'serif',face = 'bold',colour = 'black'),
         axis.title = element_text(family = 'serif',face = 'bold',colour = 'black'))
 
-tiff('../Paper_Graphs/Fig06.tiff',height=15.5,width=16.5,units='cm',res=600,compression='lzw')
-Fig06
-ggsave('Paper_Graphs/Fig06.tiff')
+
+
+tiff('Paper_Graphs/Figure06.png',width=20,height=10,units='cm',res=600,compression='lzw')
+
+
+ggsave(filename = here::here('Paper_Graphs/Figure06.tiff'),height=12,width=24,units='cm',compression='lzw')
+
 dev.off()
+
+
+
+tiff('Paper_Graphs/Figure06.png',height=15.5,width=16.5,units='cm',res=600,compression='lzw')
+Fig06
+
+ggsave('Paper_Graphs/Plot/Figure06.png',height=12,width=17,dpi=300,units = 'cm')
+
+ggsave('Paper_Graphs/Fig06.tiff')
+
+dev.off()
+
+
+# Fig06
+ggsave(
+  filename = 'Fig06.png',
+  plot = last_plot(),
+  path = here::here('Paper_Graphs/'),
+  width = 7,
+  height = 6,
+  dpi = 320
+)
+
+dev.off()
+
 
 
 # Comparing the % losses between elements (especially at end of experiment)

@@ -55,12 +55,12 @@ myNASA= meteoRH %>%
   mutate(Date=as_date(paste0(Year,'-',Month,'-',01))) %>%
   ## Add situation of covid
   mutate(Total_mean=case_when(Location=='Ago-Owu' & is.na(Total_mean) & Date=='2021-02-01'~1.292500,TRUE~Total_mean)) %>%
-  mutate(Situation=case_when(Location=='Akowonjo-Akoko' & Date ==c('2020-04-01')~'Period with disruption',
-                             Location=='Akowonjo-Akoko' & Date ==c('2020-05-01')~'Period with disruption',
-                             Location=='Akowonjo-Akoko' & Date ==c('2020-06-01')~'Period with disruption',
-                             Location=='Akowonjo-Akoko' & Date %in% c('2021-03-01','2021-04-01','2021-05-01')~'Period with disruption',
-                             Location=='Ago-Owu' & Date %in% c('2020-04-01','2020-05-01','2020-06-01')~'Period with disruption',
-                             Location=='Ijebu-Itele' & Date %in% c('2020-04-01','2020-05-01','2020-06-01')~'Period with disruption',TRUE~'Period without disruption'))
+  mutate(Situation=case_when(Location=='Akowonjo-Akoko' & Date ==c('2020-04-01')~'6 Week Interval',
+                             Location=='Akowonjo-Akoko' & Date ==c('2020-05-01')~'6 Week Interval',
+                             Location=='Akowonjo-Akoko' & Date ==c('2020-06-01')~'6 Week Interval',
+                             Location=='Akowonjo-Akoko' & Date %in% c('2021-03-01','2021-04-01','2021-05-01')~'Fortnightly',
+                             Location=='Ago-Owu' & Date %in% c('2020-04-01','2020-05-01','2020-06-01')~'6 Week Interval',
+                             Location=='Ijebu-Itele' & Date %in% c('2020-04-01','2020-05-01','2020-06-01')~'6 Week Interval',TRUE~'Fortnightly'))
 
 
 
@@ -68,7 +68,7 @@ myNASA= meteoRH %>%
 myNASA <-
   myNASA %>%
   ungroup() %>%
-  mutate(Situation=factor(Situation,levels=c('Period without disruption','Covid-19 pandemic','Period with disruption'))) %>%
+  mutate(Situation=factor(Situation,levels=c('Fortnightly','6 Week Interval'))) %>%
   mutate(Total_mean=case_when(Location=='Ago-Owu' & is.na(Total_mean) & Date=='2021-02-01'~1.292500,TRUE~Total_mean)) %>%
   mutate(Total_sd=case_when(Location=='Ago-Owu'& is.na(Total_sd)& Date=='2021-02-01'~0.4116650, TRUE~Total_sd)) %>%
   mutate(Total_mean=case_when(Location=='Ijebu-Itele' & is.na(Total_mean)& Date=='2021-02-01' ~0.957266,TRUE~Total_mean)) %>%
@@ -127,6 +127,9 @@ P00_ugly=ggplot(myNASA)+
   theme_test()
 
 
+## Convert Character to factor
+
+
 
 P01a=ggplot(myNASA,aes(x=as.factor(Date),group=1))+
   geom_col(aes(y=Rainfall_mm/15),colour='black',fill='white')+
@@ -157,7 +160,7 @@ P01b=ggplot(myNASA,aes(as.factor(Date),Total_mean,fill=Situation))+
   scale_x_discrete(name='Period',
                    labels=c('Jan 2020',rep('',5),'Jul 2020',rep('',5),
                             'Jan 2021',rep('',5),'Jul 2021',rep('',5)))+
-  scale_fill_manual(values = c('Period with disruption'='gray80','Period without disruption'='#3B3B3B'))+
+  scale_fill_manual(values = c('Fortnightly'='#3B3B3B','6 Week Interval'='gray80'))+
   #scale_fill_manual(values=c('grey40','grey65','grey90'))
   #labs(y=expression(paste('Litterfall, Mg ',ha^{-1})))+
   labs(y='Litterfall,  Mg ha^-1')+
@@ -168,7 +171,7 @@ P01b=ggplot(myNASA,aes(as.factor(Date),Total_mean,fill=Situation))+
         strip.text.x=element_blank(),
         strip.background=element_blank(),
         legend.title = element_blank(),
-        legend.text = element_text(family = 'serif',face = 'bold',colour = 'black',size = 15),
+        legend.text = element_text(family = 'serif',face = 'bold',colour = 'black',size = 18),
         legend.position = c(.2,.8),
         panel.border=element_rect(fill = NA),
         axis.text.y = element_text(family = 'serif',face = 'bold',colour = 'black',size=18),
@@ -182,17 +185,25 @@ graph1=P01a/P01b
 
 graph1
 
+
 # Save the final Graph
 
+
+ggsave('Paper_Graphs/Plot/Figure02.png',height=8,width=12.5,dpi=300)
+
+dev.off()
+
 ggsave(
-  filename = 'Paper_Graphs/Fig02a.png',
+  filename = 'Paper_Graphs/Plot/Fig02a.png',
   plot = last_plot(),
   width = 12.5,
   height = 8,
-  dpi = 600
+  dpi = 300
 )
 
- tiff('../Paper_Graphs/Fig02.tiff',width=25,height=16,units='cm',res=600,compression='lzw')
+ tiff('Paper_Graphs/Fig02a.png',width=29,height=20,units='cm',res=600,compression='lzw')
+
+ dev.off()
 
  graph1
 

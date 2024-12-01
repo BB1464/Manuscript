@@ -1,4 +1,4 @@
-
+## Litterfall
 ## ----warning=F, echo=F-------------------------------------------------------------------------
 require(tidyverse)
 require(cowplot)
@@ -13,6 +13,10 @@ load('Data/Processed/femo.Rdata')
 load('Data/Processed/newfemo.Rdata')
 
 #####
+
+Lfall5 <- Lfall5 %>%
+  mutate(Position=factor(Position,levels=c('Close','Away')))
+
 perc_leaf=Lfall5 %>%
   filter(Annual!='2022-01-01') %>%
   mutate(Year=year(Annual)) %>%
@@ -22,11 +26,23 @@ perc_leaf=Lfall5 %>%
 
 graph_interannual=ggplot(Lfall5[Lfall5$Annual!='2022-01-01',],
                          aes(as.factor(Annual),0.01*Total_g/0.4,group=Annual))+
-  geom_boxplot()+
+  geom_boxplot(outlier.shape = NA,varwidth = T)+
+  #stat_summary(geom = 'point',fun = mean,colour='red',size=3,shape=19)+
+  #  ggforce::geom_sina()+
   scale_x_discrete(labels=c('2020','2021'))+
-  labs(x='Year',y=expression(paste('Total litterfall, Mg ',ha^{-1})))+
+  labs(x='Year',y='Total litterfall, Mg DM/ha')+
   geom_text(data=perc_leaf,mapping=aes(x=ifelse(Year==2020,1,2),y=2,label=label))+
-  theme_test()
+  theme_test()+
+  facet_grid(~Location)+
+  theme(axis.text = element_text(family = 'serif',face = 'bold',colour = 'black',size=12),
+        axis.title = element_text(family = 'serif',face = 'bold',colour = 'black',size=12),
+        legend.text = element_text(family = 'serif',face = 'bold',colour = 'black',size=12),
+        legend.title = element_text(family = 'serif',face = 'bold',colour = 'black',size=12),
+        #axis.title = element_text(family = 'serif',face = 'bold',colour = 'black',size=12),
+        strip.text.x = element_text(family = 'serif',face = 'bold',colour = 'black',size=14),
+        strip.background = element_rect(fill = 'white',colour = NULL))
+
+
 
 graph_interannual
 
@@ -119,6 +135,7 @@ graph_carbon_annual=ggplot(carbon_Lfall5,
   theme(axis.title.y = ggtext::element_markdown(family = 'serif',face = 'bold',colour = 'black'),
         axis.title.x = element_text(family = 'serif',face = 'bold',colour = 'black'),
         axis.text = element_text(family = 'serif',face = 'bold',colour = 'black'))
+
 graph_carbon_annual
 
 tiff('../Paper_Graphs/graph03bis_carbon_annual.tiff',height=7.5,width=10,units='cm',res=600,compression='lzw')
@@ -149,18 +166,23 @@ graph04_Lcont=ggplot(nutri_litter,
         strip.text = element_text(family = 'serif',face = 'bold',colour = 'black'))
 
 tiff('../Paper_Graphs/graph04_nutrientinlitter.tiff',height=7.5,width=15,units='cm',res=600,compression='lzw')
-graph04_Lcont
-ggsave('Paper_Graphs/graph04_nutrientinlitter.tiff')
-dev.off()
 
-graph04bis_Lcont=ggplot(nutri_litter %>%
+graph04_Lcont
+
+ggsave('Paper_Graphs/graph04_nutrientinlitter.tiff',height=7.5,width=15,units='cm',dpi=600,compression='lzw')
+
+# ggsave('Paper_Graphs/Plot/Figure03.tiff',height=7.5,width=15,units='cm',dpi=600,compression='lzw')
+#
+# dev.off()
+
+Figure_03=ggplot(nutri_litter %>%
                           mutate(MeanContent=ifelse(Nutrient=='P',10*MeanContent,MeanContent),
                                  SDContent=ifelse(Nutrient=='P',10*SDContent,SDContent)),
                      aes(Annual,MeanContent,fill=Nutrient))+
   geom_errorbar(aes(ymin=MeanContent-SDContent,
                     ymax=MeanContent+SDContent),
                 width=0.3,position=position_dodge(width=0.8))+
-  geom_col(position=position_dodge(width=0.8))+
+  geom_col(position=position_dodge())+
   labs(x='Year',fill=NULL,
        y=expression(paste('Leaf litter nutrient, kg ',ha^{-1})) )+
   scale_fill_manual(values=c('grey90','#7F7F7F','#3B3B3B'))+
@@ -178,10 +200,35 @@ graph04bis_Lcont=ggplot(nutri_litter %>%
         strip.background = element_rect(fill = 'white',colour = NULL),
         strip.text = element_text(family = 'serif',face = 'bold',colour = 'black'))
 
-tiff('../Paper_Graphs/graph04bis_nutrientinlitter.tiff',height=7.5,width=15,units='cm',res=600,compression='lzw')
-graph04bis_Lcont
-ggsave('Paper_Graphs/graph04bis_nutrientinlitter.tiff')
+
+
+Figure_03
+
+
+tiff('Paper_Graphs/Figure_03.png',width=16,height=9,units='cm',res=600,compression='lzw')
+
+
+ggsave(filename = here::here('Paper_Graphs/Figure03.tiff'))
+
 dev.off()
+
+
+
+
+
+
+
+tiff('Paper_Graphs/Plot/Figure_03.png',height=7.5,width=15,units='cm',res=600,compression='lzw')
+
+Figure_03
+
+
+ggsave('Paper_Graphs/Plot/Figure03.png',height=7.5,width=9,dpi=300)
+
+dev.off()
+
+
+
 
 
 #######################

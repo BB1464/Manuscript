@@ -78,20 +78,21 @@ myNASA= meteoRH %>%
   mutate(Date=as_date(paste0(Year,'-',Month,'-',01))) %>%
   ## Add situation of covid
   mutate(Total_mean=case_when(Location=='Ago-Owu' & is.na(Total_mean) & Date=='2021-02-01'~1.292500,TRUE~Total_mean)) %>%
-  mutate(Situation=case_when(Location=='Akowonjo-Akoko' & Date ==c('2020-04-01')~'Period with disruption',
-                             Location=='Akowonjo-Akoko' & Date ==c('2020-05-01')~'Period with disruption',
-                             Location=='Akowonjo-Akoko' & Date ==c('2020-06-01')~'Period with disruption',
-                             Location=='Akowonjo-Akoko' & Date %in% c('2021-03-01','2021-04-01','2021-05-01')~'Period with disruption',
-                             Location=='Ago-Owu' & Date %in% c('2020-04-01','2020-05-01','2020-06-01')~'Period with disruption',
-                             Location=='Ijebu-Itele' & Date %in% c('2020-04-01','2020-05-01','2020-06-01')~'Period with disruption',TRUE~'Period without disruption'))
+  mutate(Situation=case_when(Location=='Akowonjo-Akoko' & Date ==c('2020-04-01')~'6 Week Interval',
+                             Location=='Akowonjo-Akoko' & Date ==c('2020-05-01')~'6 Week Interval',
+                             Location=='Akowonjo-Akoko' & Date ==c('2020-06-01')~'6 Week Interval',
+                             Location=='Akowonjo-Akoko' & Date %in% c('2021-03-01','2021-04-01','2021-05-01')~'6 Week Interval',
+                             Location=='Ago-Owu' & Date %in% c('2020-04-01','2020-05-01','2020-06-01')~'6 Week Interval',
+                             Location=='Ijebu-Itele' & Date %in% c('2020-04-01','2020-05-01','2020-06-01')~'6 Week Interval',TRUE~'Fortnightly')) %>%
+  mutate(Situation=factor(Situation,levels=c('Fortnightly','6 Week Interval')))
 
 
-
+## Second
 
 myNASA <-
   myNASA %>%
   ungroup() %>%
-  mutate(Situation=factor(Situation,levels=c('Period without disruption','Covid-19 pandemic','Period with disruption'))) %>%
+  #mutate(Situation=factor(Situation,levels=c('Period without disruption','Covid-19 pandemic','Period with disruption'))) %>%
   mutate(Total_mean=case_when(Location=='Ago-Owu' & is.na(Total_mean) & Date=='2021-02-01'~1.292500,TRUE~Total_mean)) %>%
   mutate(Total_sd=case_when(Location=='Ago-Owu'& is.na(Total_sd)& Date=='2021-02-01'~0.4116650, TRUE~Total_sd)) %>%
   mutate(Total_mean=case_when(Location=='Ijebu-Itele' & is.na(Total_mean)& Date=='2021-02-01' ~0.957266,TRUE~Total_mean)) %>%
@@ -157,7 +158,17 @@ P01a=ggplot(myNASA,aes(x=as.factor(Date),group=1))+
   scale_y_continuous(
     sec.axis=sec_axis(~.*15,name='Rainfall, mm'),expand = expansion(mult = c(0,0),add = c(0,0.6)))+
   facet_wrap(~Location)+
-  labs(y = "Temperature \u00B0C")
+  labs(y = "Temperature \u00B0C")+
+  theme_test()+
+  theme(axis.ticks.x=element_blank(),
+        axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        strip.background = element_rect(fill = 'white',colour = NULL),
+        axis.title.y.left   = element_text(family = 'serif',face = 'bold',colour = 'black',size = 18),
+        axis.text.y.right = element_text(family = 'serif',face = 'bold',colour = 'black',size = 18),
+        axis.text.y.left = element_text(family = 'serif',face = 'bold',colour = 'black',size = 18),
+        axis.title.y.right = element_text(family = 'serif',face = 'bold',colour = 'black',size = 18),
+        strip.text.x = element_text(family = 'serif',face = 'bold',colour = 'black',size = 18))
 
 
 P01a
@@ -168,7 +179,7 @@ P01b=ggplot(myNASA,aes(as.factor(Date),Total_mean,fill=Situation))+
   scale_x_discrete(name='Period',
                    labels=c('Jan 2020',rep('',5),'Jul 2020',rep('',5),
                             'Jan 2021',rep('',5),'Jul 2021',rep('',5)))+
-  scale_fill_manual(values = c('Period with disruption'='gray80','Period without disruption'='#3B3B3B'))+
+  scale_fill_manual(values = c('6 Week Interval'='gray80','Fortnightly'='#3B3B3B'))+
   #scale_fill_manual(values=c('grey40','grey65','grey90'))
   #labs(y=expression(paste('Litterfall, Mg ',ha^{-1})))+
   labs(y='Litterfall,  Mg ha^-1')+

@@ -187,7 +187,7 @@ Fig04=ggplot(decomp1,aes(Time,-log(Residual),colour=Medium))+
   facet_grid(~Location)+
   theme_test()+
   theme(legend.position=c(0.75,0.85),
-        axis.text = element_text(family = 'serif',face = 'bold',colour = 'black',size=12),
+        axis.text = element_text(family = 'serif',face = 'bold',colour = 'black',size=10),
         axis.title = element_text(family = 'serif',face = 'bold',colour = 'black',size=12),
         legend.text = element_text(family = 'serif',face = 'bold',colour = 'black',size=12),
         legend.title = element_text(family = 'serif',face = 'bold',colour = 'black',size=12),
@@ -200,8 +200,22 @@ Fig04
 
 # Save the Plot -----------------------------------------------------------
 
-tiff('Paper_Graphs/Fig04.tiff',height=10,width=20,units='cm',res=600,compression='lzw')
+tiff('Paper_Graphs/Figure04.png',width=24,height=14,units='cm',res=600,compression='lzw')
+
+
+ggsave(filename = here::here('Paper_Graphs/Figure04.tiff'))
+
+dev.off()
+
+
+
+tiff('Paper_Graphs/Plot/Figure04.png',height=10,width=20,units='cm',res=600,compression='lzw')
 Fig04
+
+ggsave('Paper_Graphs/Plot/Figure04.png',height=7.5,width=10,dpi=300)
+
+dev.off()
+
 #ggsave('../Paper_Graphs/Fig04.tiff')
 
 ggsave(filename = here::here('Paper_Graphs/Fig04.tiff'))

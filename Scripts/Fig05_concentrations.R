@@ -125,7 +125,7 @@ Old_Fig05=ggplot(nutri_stat %>%
 Old_Fig05
 
 
-tiff('Paper_Graphs/Old_Fig05.tiff',height=15.5,width=18.5,units='cm',res=600,compression='lzw')
+tiff('Paper_Graphs/Figure05.png',height=15.5,width=18.5,units='cm',res=600,compression='lzw')
 
 ggsave(filename = here::here('Paper_Graphs/Fig05_concentrations.tiff'))
 
@@ -184,9 +184,31 @@ Fig05=ggplot(allSE %>%
         strip.background = element_rect(fill = 'white',colour = NULL),
         strip.text.x = element_text(family = 'serif',face = 'bold',colour = 'black',size=12))
 
+
+# Save the plot
+
+tiff('Paper_Graphs/Fig05.png',width=24,height=14,units='cm',res=600,compression='lzw')
+
+
+ggsave(filename = here::here('Paper_Graphs/Fig05.tiff'),height=12,width=24,units='cm',compression='lzw')
+
+dev.off()
+
+
+
+
+
+
+
+
 tiff('Paper_Graphs/Fig05.tiff',height=7.5,width=12.5,units='cm',res=600,compression='lzw')
 
+
 Fig05
+
+ggsave('Paper_Graphs/Plot/Figure05.png',height=12,width=17,dpi=300,units = 'cm')
+
+
 
 ggsave('Paper_Graphs/Fig05.tiff')
 dev.off()
