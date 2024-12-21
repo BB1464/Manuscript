@@ -131,13 +131,13 @@ Fig06=ggplot(nutri_stat %>%
              aes(Newdate,Losses,fill=NULL,colour=Access,group=paste0(Access,Newdate)))+
   geom_hline(yintercept=100,size=0.5,linetype=3)+
   geom_boxplot(width=30,position=position_dodge())+
-  labs(x='Time, days after incubation',y='Residual amount in cocoa leaf litter, % initial')+
+  labs(x='Time, days after incubation',y='Residual cocoa leaf litter (%)')+
   scale_colour_manual(values=c('blue','red2'))+
   facet_grid(Nutrient~Location,scales='free_y')+
   theme_test()+
-  theme(legend.title=element_text(size=12,family = 'serif',face = 'bold',colour = 'black'),
+  theme(legend.title=element_blank(),
         legend.text=element_text(size=10,family = 'serif',colour = 'black'),
-        legend.position=c(0.46,0.6),
+        legend.position=c(0.4,0.9),
         legend.key=element_rect(fill = alpha("white", .5)),
         legend.background=element_rect(fill = alpha("white", 0.5)),
         strip.background = element_rect(fill = 'white',colour = NULL),
